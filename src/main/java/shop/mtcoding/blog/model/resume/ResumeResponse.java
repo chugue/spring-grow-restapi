@@ -5,13 +5,34 @@ import lombok.Data;
 import shop.mtcoding.blog.model.apply.Apply;
 import shop.mtcoding.blog.model.skill.Skill;
 import shop.mtcoding.blog.model.skill.SkillResponse;
-import shop.mtcoding.blog.model.resume.user.User;
+import shop.mtcoding.blog.model.user.User;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ResumeResponse {
+
+    @Data
+    public static class SaveDTO {
+        private String title;
+        private String area;
+        private String edu;
+        private String career;
+        private String introduce;
+        private String portLink;
+        private Skill skill;
+
+        public SaveDTO(Resume resume, Skill skill) {
+            this.title = resume.getTitle();
+            this.area = resume.getArea();
+            this.edu = getEdu();
+            this.career = resume.getCareer();
+            this.introduce = resume.getIntroduce();
+            this.portLink = resume.getPortLink();
+            this.skill = skill;
+        }
+    }
 
     @Data // comp-manage페이지에 뿌려지는 resume용 DTO
     public static class CmrDTO {
@@ -255,7 +276,7 @@ public class ResumeResponse {
 
 
     @Data
-    public static class ResumeStateDTO{
+    public static class ResumeStateDTO {
         private Boolean isApply;
         private List<ResumeApplyDTO> applys;
 

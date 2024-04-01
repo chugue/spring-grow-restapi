@@ -1,10 +1,13 @@
 package shop.mtcoding.blog.model.resume;
 
 
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
+import shop.mtcoding.blog.model.board.Board;
+import shop.mtcoding.blog.model.jobs.Jobs;
 import shop.mtcoding.blog.model.skill.Skill;
-import shop.mtcoding.blog.model.resume.user.User;
+import shop.mtcoding.blog.model.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +30,10 @@ public class ResumeRequest {
         private String title;
         private String area;
         private String edu;
+        private String skillName;
         private String career;
         private String introduce;
         private String portLink;
-        private List<String> skill;
 
         public Resume toEntity(User user){
             return Resume.builder()
@@ -41,6 +44,12 @@ public class ResumeRequest {
                     .introduce(introduce)
                     .portLink(portLink)
                     .user(user)
+                    .build();
+        }
+
+        public Skill toEntity(){
+            return Skill.builder()
+                    .name(skillName)
                     .build();
         }
     }

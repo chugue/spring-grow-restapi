@@ -3,10 +3,12 @@ package shop.mtcoding.blog.model.resume;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import shop.mtcoding.blog.model.resume.user.User;
-import shop.mtcoding.blog.model.resume.user.UserService;
+import shop.mtcoding.blog._core.util.ApiUtil;
+import shop.mtcoding.blog.model.user.User;
+import shop.mtcoding.blog.model.user.UserService;
 
 
 @RequiredArgsConstructor
@@ -85,10 +87,9 @@ public class ResumeController {
     }
 
     @PostMapping("/resume/save")
-    public String save(ResumeRequest.SaveDTO reqDTO) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        resumeService.save(reqDTO);
-        return "redirect:/user/" + sessionUser.getId() + "/user-home";
+    public ResponseEntity<?> save(ResumeRequest.SaveDTO reqDTO) {
+        ResumeResponse.SaveDTO respDTO = resumeService.save(reqDTO);
+        return ResponseEntity.ok(respDTO);
     }
 
     @PostMapping("/resume/{id}/delete")

@@ -7,7 +7,7 @@ import shop.mtcoding.blog.model.apply.Apply;
 import shop.mtcoding.blog.model.offer.Offer;
 import shop.mtcoding.blog.model.scrap.Scrap;
 import shop.mtcoding.blog.model.skill.Skill;
-import shop.mtcoding.blog.model.resume.user.User;
+import shop.mtcoding.blog.model.user.User;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class Resume {
     private Timestamp createdAt;
 
     @Builder
-    public Resume(Integer id, User user, String title, String area, String edu, String career, String introduce, String portLink, boolean isOwner, Timestamp createdAt) {
+    public Resume(Integer id, User user, String title, String area, String edu, String career, String introduce, String portLink, boolean isOwner, Timestamp createdAt, List<Skill> skill) {
         this.id = id;
         this.user = user;
         this.title = title;
@@ -63,6 +63,7 @@ public class Resume {
         this.introduce = introduce;
         this.portLink = portLink;
         this.isOwner = isOwner;
+        this.skillList = skill;
         this.createdAt = createdAt;
     }
 

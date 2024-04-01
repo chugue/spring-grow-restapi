@@ -14,8 +14,9 @@ import shop.mtcoding.blog.model.apply.ApplyResponse;
 import shop.mtcoding.blog.model.skill.Skill;
 import shop.mtcoding.blog.model.skill.SkillJPARepository;
 import shop.mtcoding.blog.model.skill.SkillResponse;
-import shop.mtcoding.blog.model.resume.user.User;
+import shop.mtcoding.blog.model.user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -80,12 +81,12 @@ public class ResumeService {
                 .build();
 
 
-        return  resumeDetailDTO;
+        return resumeDetailDTO;
     }
 
     public ResumeResponse.ResumeStateDTO findAllResumeJoinApplyByUserIdAndJobsId(Integer userId, Integer jobsId) {
         List<Resume> resumeList = resumeJPARepo.findAllByUserId(userId);
-        List<Apply> applies =  applyJPARepo.findAll();
+        List<Apply> applies = applyJPARepo.findAll();
 
         //sessionUser 의 지원한 공고 리스트
         List<ApplyResponse.ApplyUserViewDTO> listDTO = applies.stream()
@@ -121,15 +122,14 @@ public class ResumeService {
         Boolean isApply = false;
 
         //지원한 이력서가 있고 작성한이력서 리스트가 비었으면 isApply true
-        if (resumeApplyDTOList.size() < 1 && listDTO.size() > 1){
+        if (resumeApplyDTOList.size() < 1 && listDTO.size() > 1) {
             isApply = true;
         }
-        
+
         ResumeResponse.ResumeStateDTO resumeStateDTO = new ResumeResponse.ResumeStateDTO();
 
         resumeStateDTO.setIsApply(isApply);
         resumeStateDTO.setApplys(resumeApplyDTOList);
-
 
 
         return resumeStateDTO;
@@ -194,7 +194,8 @@ public class ResumeService {
 
     //이력서 신청
     @Transactional
-    public void save(ResumeRequest.SaveDTO saveDTO) {
+    public ResumeResponse.SaveDTO save(ResumeRequest.SaveDTO saveDTO) {
+
         //1. 인증처리 : 유저가 세션을가지고있는지 로그인상태 확인
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) {
@@ -202,25 +203,11 @@ public class ResumeService {
         }
 
         //2. 이력서 작성
-        Resume resume = saveDTO.toEntity(sessionUser);
-        resumeJPARepo.save(resume);
-        System.out.println("------------------" + resume.getId());
+        Resume resume = resumeJPARepo.save(saveDTO.toEntity(sessionUser));
 
-        // 3. 스킬 작성
-        saveDTO.getSkill().stream()
-                .map((skillName) -> {
-                    return Skill.builder()
-                            .name(skillName)
-                            .role(sessionUser.getRole())
-                            .resume(resume)
-                            .build();
-                })
+        List<Skill> skill = skillJPARepo.save(saveDTO.toEntity());
 
-                .forEach((skill) -> {
-                    skillJPARepo.save(skill);
-
-                });
-
+        return new ResumeResponse.SaveDTO(resume, skill);
     }
 
     //이력서 삭제

@@ -3,6 +3,8 @@ package shop.mtcoding.blog.model.skill;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import shop.mtcoding.blog.model.reply.Reply;
+import shop.mtcoding.blog.model.resume.Resume;
 
 import java.util.List;
 
