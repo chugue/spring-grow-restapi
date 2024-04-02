@@ -143,23 +143,22 @@ public class ResumeService {
         return resumes.stream().map(resume -> resume.toDTO()).collect(Collectors.toList());
     }
 
-    // 이력서 수정
+
+    // 이력서 수정폼
     public ResumeResponse.UpdateDTO updateForm(Integer id) {
         Resume resume = resumeJPARepo.findById(id)
                 .orElseThrow(() -> new Exception404("이력서를 찾을 수 없습니다"));
 
         List<Skill> skill = skillRepo.findAllByResumeId(id);
-        ResumeResponse.UpdateDTO reqDTO = ResumeResponse.UpdateDTO.builder()
-                .title(resume.getTitle())
-                .area(resume.getArea())
-                .edu(resume.getEdu())
-                .career(resume.getCareer())
-                .introduce(resume.getIntroduce())
-                .portLink(resume.getPortLink())
-                .skillChecked(new SkillResponse.SkillCheckedDTO(skill)).build();
-        return reqDTO;
-    }
 
+        ResumeResponse.UpdateDTO respDTO = ResumeResponse.UpdateDTO.builder()
+                .resume(resume)
+                .skills(skill)
+                .build();
+
+        return respDTO;
+
+    }
 
     @Transactional
     public void update(Integer id, Integer sessionUserId, ResumeRequest.UpdateDTO reqDTO) {
