@@ -38,5 +38,13 @@ public class ResumeJPARepositoryTest {
         System.out.println(resumes.size());
     }
 
-
+    @Test
+    public void detailUserResumeList_test(){
+        //given
+        Integer userId = 1;
+        //when
+        List<Resume> resumes = resumeJPARepository.findAllDetailResumeByUserId(userId);
+        System.out.println("결과값----------------------------------------------------"+resumes.size());
+        //then
+    }
 }

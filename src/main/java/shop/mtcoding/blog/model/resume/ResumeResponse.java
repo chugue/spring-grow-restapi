@@ -280,11 +280,11 @@ public class ResumeResponse {
         private String isPass;
 
         @Builder
-        public ResumeApplyDTO(Resume resume, Apply apply) {
+        public ResumeApplyDTO(Resume resume) {
             this.id = resume.getId();
             this.title = resume.getTitle();
             this.userId = resume.getUser().getId();
-            this.isPass = apply.getIsPass();
+
         }
     }
 }

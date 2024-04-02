@@ -30,7 +30,6 @@ public class JobsController {
             throw new Exception401("인증되지 않았습니다.");
         }
 
-
         //공고정보와 사용자정보를 가져오는 detailDTO
         JobsResponse.JobsDetailDTO detailDTO = jobsService.jobsDetailDTO(jobsId,sessionUser);
         System.out.println("detailDTO :"+detailDTO);
