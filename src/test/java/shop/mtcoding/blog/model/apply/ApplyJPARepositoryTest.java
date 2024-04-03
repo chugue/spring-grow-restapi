@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import javax.swing.plaf.SpinnerUI;
 import java.util.List;
 
 @DataJpaTest
@@ -21,5 +22,16 @@ public class ApplyJPARepositoryTest {
 
         System.out.println(applyList.size());
 
+    }
+
+    @Test
+    public void ww_test(){
+        //given
+        Integer resumeId = 1;
+        Integer jobsId = 2;
+        //when
+        Apply apply = applyJPARepo.findApplyByResumeId(resumeId,jobsId);
+        //then
+        System.out.println("결과값*-***/**/*/*/*/*/*/*/*/*/*/*/"+apply);
     }
 }

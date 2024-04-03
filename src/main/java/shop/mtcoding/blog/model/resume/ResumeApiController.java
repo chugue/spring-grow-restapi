@@ -31,6 +31,7 @@ public class ResumeApiController {
         return ResponseEntity.ok(new ApiUtil<>(respDTO));
     }
 
+    // 이력서 작성
     @PostMapping("/resume/save")
     public ResponseEntity<?> save(@RequestBody ResumeRequest.SaveDTO reqDTO){
         resumeService.save(reqDTO);

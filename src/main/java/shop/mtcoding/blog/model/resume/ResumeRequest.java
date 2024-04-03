@@ -3,6 +3,7 @@ package shop.mtcoding.blog.model.resume;
 
 import lombok.Builder;
 import lombok.Data;
+import shop.mtcoding.blog.model.apply.Apply;
 import shop.mtcoding.blog.model.jobs.Jobs;
 import shop.mtcoding.blog.model.jobs.JobsRequest;
 import shop.mtcoding.blog.model.skill.Skill;
@@ -55,6 +56,7 @@ public class ResumeRequest {
         private String career;
         private String introduce;
         private String portLink;
+        private Apply apply;
         private List<WriteSkillDTO> skillList;
 
         public Resume toEntity(User user){

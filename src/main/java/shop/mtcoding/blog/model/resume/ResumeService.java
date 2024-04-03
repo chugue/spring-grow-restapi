@@ -243,7 +243,9 @@ public class ResumeService {
         //2. 이력서 작성
         Resume resume = saveDTO.toEntity(sessionUser);
         Resume savedResume = resumeJPARepo.save(resume);
-        System.out.println("------------------" + resume.getId());
+        // 지원 테이블에도 이력서 연동 상태값 1로 초기화
+//        applyJPARepo.save(Apply.builder().resume(savedResume).isPass("1").build());
+//        System.out.println("------------------" + resume.getId());
 
         // 3. 스킬 작성
         saveDTO.getSkillList().stream()

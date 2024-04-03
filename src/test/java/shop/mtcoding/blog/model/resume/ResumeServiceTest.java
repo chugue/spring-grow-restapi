@@ -20,7 +20,7 @@ public class ResumeServiceTest {
         int resumeId = 1;
         int jobsId = 3;
         // when
-        resumeService.findAllResumeJoinApplyByUserIdAndJobsId(resumeId, jobsId);
+//        resumeService.fin(resumeId, jobsId);
         // then
 
     }

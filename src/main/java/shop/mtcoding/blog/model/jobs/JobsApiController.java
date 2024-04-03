@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.blog._core.errors.exception.Exception401;
 import shop.mtcoding.blog._core.util.ApiUtil;
+import shop.mtcoding.blog.model.resume.Resume;
 import shop.mtcoding.blog.model.resume.ResumeResponse;
 
 import shop.mtcoding.blog.model.resume.ResumeService;
@@ -59,17 +60,15 @@ public class JobsApiController {
         return ResponseEntity.ok(new ApiUtil(job));
     }
 
-
     @GetMapping("/api/jobs/{jobsId}/detail")
-    public ResponseEntity<?> jobsDetail(@PathVariable Integer jobsId, HttpServletRequest request) {
+    public ResponseEntity<?> jobsDetail(@PathVariable Integer jobsId) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-
         if (sessionUser == null) {
             throw new Exception401("인증되지 않았습니다.");
         }
 
         //사용자 이력서 보유내역과 지원상태를 가져오는 ResumeApplyDTO
-        JobsResponse.JobResumeDetailDTO resumeApplyDTOList = jobsService.jobsDetailDTO(jobsId, sessionUser);
+        JobsResponse.JobResumeDetailDTO resumeApplyDTOList = jobsService.jobsDetailDTO(jobsId,sessionUser);
 
         return ResponseEntity.ok(resumeApplyDTOList);
     }

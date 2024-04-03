@@ -22,7 +22,6 @@ public class JobsController {
     private final HttpSession session;
 
 
-
     // 지워도 될듯?
     @GetMapping("/jobs/write-jobs-form")
     public String writeJobsForm(HttpServletRequest request) {
