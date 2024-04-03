@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import shop.mtcoding.blog._core.errors.exception.Exception401;
 import shop.mtcoding.blog._core.errors.exception.Exception404;
+import shop.mtcoding.blog._core.util.JWTUtil;
 import shop.mtcoding.blog.model.apply.Apply;
 import shop.mtcoding.blog.model.apply.ApplyJPARepository;
 import shop.mtcoding.blog.model.comp.CompRequest;
@@ -14,7 +15,6 @@ import shop.mtcoding.blog.model.jobs.Jobs;
 import shop.mtcoding.blog.model.jobs.JobsJPARepository;
 import shop.mtcoding.blog.model.resume.Resume;
 import shop.mtcoding.blog.model.resume.ResumeJPARepository;
-import shop.mtcoding.blog.model.resume.ResumeRequest;
 import shop.mtcoding.blog.model.skill.Skill;
 import shop.mtcoding.blog.model.skill.SkillJPARepository;
 
@@ -34,6 +34,7 @@ public class UserService {
 
     @Transactional
     public UserResponse.UserHomeDTO userHome(Integer userId) {
+
         Integer waitCount = userRepo.findByUserIdN1(userId);
         Integer resultCount = userRepo.findByUserId34(userId);
         Integer applyCount = userRepo.findAllbyUserId(userId);
@@ -104,10 +105,14 @@ public class UserService {
     }
 
 
-    public User login(UserRequest.LoginDTO reqDTO) {
+    public String login(UserRequest.LoginDTO reqDTO) {
+
         try {
-            return userRepo.findByIdAndPassword(reqDTO.getEmail(), reqDTO.getPassword())
+            User user = userRepo.findByIdAndPassword(reqDTO.getEmail(), reqDTO.getPassword())
                     .orElseThrow(() -> new Exception401("회원 정보가 없습니다."));
+            String jwt = JWTUtil.create(user);
+            return jwt;
+
         } catch (EmptyResultDataAccessException e) {
             throw new Exception401("아이디,비밀번호가 틀렸어요");
         }

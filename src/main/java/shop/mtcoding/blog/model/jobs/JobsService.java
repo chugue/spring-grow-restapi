@@ -14,9 +14,6 @@ import shop.mtcoding.blog.model.resume.ResumeJPARepository;
 import shop.mtcoding.blog.model.skill.Skill;
 import shop.mtcoding.blog.model.skill.SkillJPARepository;
 
-import shop.mtcoding.blog.model.skill.SkillRequest;
-import shop.mtcoding.blog.model.skill.SkillResponse;
-
 import shop.mtcoding.blog.model.user.User;
 import shop.mtcoding.blog.model.user.UserJPARepository;
 
@@ -90,6 +87,7 @@ public class JobsService {
 
 
     public List<JobsResponse.ListDTO> listDTOS() {
+
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         List<Jobs> jobsList = jobsRepo.findAll(sort);
 
@@ -106,6 +104,7 @@ public class JobsService {
                     .user(user)
                     .skills(skillList).build());
         }
+
         return listDTOS;
     }
 

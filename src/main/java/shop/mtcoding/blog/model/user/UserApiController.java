@@ -4,13 +4,11 @@ package shop.mtcoding.blog.model.user;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.blog._core.util.ApiUtil;
-import shop.mtcoding.blog.model.jobs.Jobs;
 import shop.mtcoding.blog.model.jobs.JobsRequest;
 import shop.mtcoding.blog.model.jobs.JobsResponse;
 import shop.mtcoding.blog.model.jobs.JobsService;
@@ -32,25 +30,16 @@ public class UserApiController {
 
     @PostMapping("/api/user/login")
     public ResponseEntity<?> login(@RequestBody UserRequest.LoginDTO reqDTO, HttpSession session) {
-        User user = userService.login(reqDTO);
-        if (user != null) {
-            session.setAttribute("sessionUser", user);
-            int role = user.getRole();
-            if (role == 1) {
-            } else if (role == 2) {
-                session.setAttribute("sessionComp", user);
-            }
-        }
-        return ResponseEntity.ok(new ApiUtil(null));
+        String jwt = userService.login(reqDTO);
+
+        return ResponseEntity.ok().header("Authorization","Bearer " +jwt).body(new ApiUtil<>(null));
     }
 
 
     @GetMapping("/")
-    public ResponseEntity<?> index(HttpServletRequest request) {
+    public ResponseEntity<?> index() {
         List<JobsResponse.ListDTO> respList = jobsService.listDTOS();
-        request.setAttribute("listDTOS", respList);
-
-        return ResponseEntity.ok(new ApiUtil(respList));
+        return ResponseEntity.ok(new ApiUtil<>(respList));
     }
 
 
@@ -69,10 +58,9 @@ public class UserApiController {
     @GetMapping("/api/users/{id}/home")
     public ResponseEntity<?> userHome (@PathVariable Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+        UserResponse.UserHomeDTO respList = userService.userHome(id);
 
-        UserResponse.UserHomeDTO userHomeDTO = userService.userHome(sessionUser.getId());
-
-        return ResponseEntity.ok(new ApiUtil<>(userHomeDTO));
+        return ResponseEntity.ok(new ApiUtil<>(respList));
     }
 
     @GetMapping("/api/users/username-same-check")
