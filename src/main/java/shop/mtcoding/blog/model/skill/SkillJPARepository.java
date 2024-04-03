@@ -16,6 +16,27 @@ public interface SkillJPARepository extends JpaRepository<Skill, Integer> {
     @Query("select s from Skill s where s.jobs.id = :jobsId")
     List<Skill> findAllByJobsId(@Param("jobsId") Integer jobsId);
 
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("delete from Skill s where s.resume.id = :resumeId")
+    void deleteByresumeId(@Param("resumeId") Integer resumeId);
+
+    @Query("select s from Skill s where s.resume.id = :resumeId")
+    List<Skill> findAllByResumeId(@Param("resumeId") Integer resumeId);
+
+
+    @Query("select s from Jobs j join fetch User u on j.user.id = u.id join fetch Skill s on s.jobs.id = j.id where j.id = :jobsId")
+    List<Skill> findAllByJoinJobsId(@Param("jobsId") Integer jobsId);
+
+    @Query("SELECT s FROM Skill s WHERE s.jobs.id = :jobsId")
+    List<Skill> findByJobsId(@Param("jobsId") Integer jobsId);
+
+    @Query("SELECT s FROM Skill s WHERE s.resume.id = :resumeId")
+    List<Skill> findByResumeId(@Param("resumeId") Integer resumeId);
+
+    @Query("select s from Apply a join fetch Resume r on a.resume.id = r.id join fetch Skill s on s.resume.id = r.id where a.id = :resumeId")
+    List<Skill> findAllByJoinResumeId(@Param("resumeId") Integer resumeId);
+
     /***
      * clearAutomatically : 쿼리 실행 후 영속성 컨텍스트를 자동으로 지움
      * flushAutomatically : 자동으로 플러시함
@@ -28,26 +49,5 @@ public interface SkillJPARepository extends JpaRepository<Skill, Integer> {
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from Skill s where s.jobs.id = :jobsId")
     void deleteByJobsId(@Param("jobsId") Integer jobsId);
-
-
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("delete from Skill s where s.resume.id = :resumeId")
-    void deleteByresumeId(@Param("resumeId") Integer resumeId);
-
-    @Query("select s from Skill s where s.resume.id = :resumeId")
-    List<Skill> findAllByResumeId(@Param("resumeId") Integer resumeId);
-
-
-    @Query("select s from Apply a join fetch Resume r on a.resume.id = r.id join fetch Skill s on s.resume.id = r.id where a.id = :resumeId")
-    List<Skill> findAllByJoinResumeId(@Param("resumeId") Integer resumeId);
-
-    @Query("select s from Jobs j join fetch User u on j.user.id = u.id join fetch Skill s on s.jobs.id = j.id where j.id = :jobsId")
-    List<Skill> findAllByJoinJobsId(@Param("jobsId") Integer jobsId);
-
-    @Query("SELECT s FROM Skill s WHERE s.jobs.id = :jobsId")
-    List<Skill> findByJobsId(@Param("jobsId") Integer jobsId);
-
-    @Query("SELECT s FROM Skill s WHERE s.resume.id = :resumeId")
-    List<Skill> findByResumeId(@Param("resumeId") Integer resumeId);
 }
 

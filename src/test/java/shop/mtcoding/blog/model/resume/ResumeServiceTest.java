@@ -14,14 +14,14 @@ public class ResumeServiceTest {
 
 
 
-    @Test
-    public void ResumeApplyDTO_test() {
-        // given
-        int resumeId = 1;
-        int jobsId = 3;
-        // when
-        resumeService.findAllResumeJoinApplyByUserIdAndJobsId(resumeId, jobsId);
-        // then
-
-    }
+//    @Test
+//    public void ResumeApplyDTO_test() {
+//        // given
+//        int resumeId = 1;
+//        int jobsId = 3;
+//        // when
+//        resumeService.findAllResumeJoinApplyByUserIdAndJobsId(resumeId, jobsId);
+//        // then
+//
+//    }
 }

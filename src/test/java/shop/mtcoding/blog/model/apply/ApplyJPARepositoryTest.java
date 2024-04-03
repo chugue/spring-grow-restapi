@@ -20,6 +20,5 @@ public class ApplyJPARepositoryTest {
         // then
 
         System.out.println(applyList.size());
-
     }
 }
