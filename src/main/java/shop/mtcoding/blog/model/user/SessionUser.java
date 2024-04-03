@@ -3,8 +3,6 @@ package shop.mtcoding.blog.model.user;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 @Data
 public class SessionUser {
     private Integer id;

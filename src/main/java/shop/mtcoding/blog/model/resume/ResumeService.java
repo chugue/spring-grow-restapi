@@ -14,6 +14,7 @@ import shop.mtcoding.blog.model.apply.ApplyResponse;
 import shop.mtcoding.blog.model.skill.Skill;
 import shop.mtcoding.blog.model.skill.SkillJPARepository;
 import shop.mtcoding.blog.model.skill.SkillResponse;
+import shop.mtcoding.blog.model.user.SessionUser;
 import shop.mtcoding.blog.model.user.User;
 
 import java.sql.ClientInfoStatus;
@@ -250,7 +251,7 @@ public class ResumeService {
     @Transactional
     public void delete(Integer boardId) {
         //1. 인증처리
-        User sessionUser = (User) session.getAttribute("sessionUser");
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
 
         if (sessionUser.getId() == null) {
             throw new Exception401("서비스가 필요한 서비스입니다.");

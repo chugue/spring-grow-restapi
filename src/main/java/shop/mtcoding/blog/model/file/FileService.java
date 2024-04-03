@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import shop.mtcoding.blog._core.errors.exception.Exception401;
+import shop.mtcoding.blog.model.user.SessionUser;
 import shop.mtcoding.blog.model.user.User;
 import shop.mtcoding.blog.model.user.UserJPARepository;
 
@@ -34,7 +35,7 @@ public class FileService {
             // 이미지 파일 저장
             Files.write(imgPath, decodedBytes);
 
-            User sessionUser = (User) session.getAttribute("sessionUser");
+            SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
             User newSessionUser = userJPARepo.findById(sessionUser.getId())
                     .orElseThrow(() -> new Exception401("로그인이 필요한 서비스입니다."));
             newSessionUser.setImgFileName(imgFilename);

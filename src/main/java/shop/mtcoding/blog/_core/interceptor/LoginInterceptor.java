@@ -21,7 +21,9 @@ public class LoginInterceptor implements HandlerInterceptor{
 
         // 검증
         try {
-            User sessionUser = (User) shop.mtcoding.blog._core.utils.JwtUtil.verify(jwt);
+            SessionUser sessionUser = shop.mtcoding.blog._core.utils.JwtUtil.verify(jwt);
+            System.out.println("token : " + 111111);
+
             if (sessionUser.getRole() == 1){
                 HttpSession session = request.getSession();
                 session.setAttribute("sessionUser", sessionUser);
@@ -32,6 +34,7 @@ public class LoginInterceptor implements HandlerInterceptor{
             }
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

@@ -109,8 +109,9 @@ public class UserService {
 
     public User login(UserRequest.LoginDTO reqDTO) {
         try {
-            return userRepo.findByIdAndPassword(reqDTO.getEmail(), reqDTO.getPassword())
+            User user = userRepo.findByIdAndPassword(reqDTO.getEmail(), reqDTO.getPassword())
                     .orElseThrow(() -> new Exception401("회원 정보가 없습니다."));
+            return user;
         } catch (EmptyResultDataAccessException e) {
             throw new Exception401("아이디,비밀번호가 틀렸어요");
         }

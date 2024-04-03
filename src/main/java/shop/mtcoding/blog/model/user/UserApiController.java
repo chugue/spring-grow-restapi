@@ -31,8 +31,9 @@ public class UserApiController {
     // Update 사용자 정보 수정 완료
     @PutMapping("/api/users")
     public ResponseEntity<?> update(@RequestBody UserRequest.UpdateDTO reqDTO) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        UserResponse.UserUpdateDTO updatedUser = userService.updateById(sessionUser, reqDTO);
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        User user = userService.findById(sessionUser.getId());
+        UserResponse.UserUpdateDTO updatedUser = userService.updateById(user, reqDTO);
         session.setAttribute("sessionUser", updatedUser);
         return ResponseEntity.ok(new ApiUtil<>(updatedUser));
     }
@@ -62,15 +63,8 @@ public class UserApiController {
     @PostMapping("/user/login")
     public ResponseEntity<?> login(@RequestBody UserRequest.LoginDTO reqDTO, HttpSession session) {
         User user = userService.login(reqDTO);
-        if (user != null) {
-            session.setAttribute("sessionUser", user);
-            int role = user.getRole();
-            if (role == 1) {
-            } else if (role == 2) {
-                session.setAttribute("sessionComp", user);
-            }
-        }
-        return ResponseEntity.ok(new ApiUtil(null));
+        String jwt = shop.mtcoding.blog._core.utils.JwtUtil.create(user);
+        return ResponseEntity.ok().header("Authorization", "Bearer "+ jwt).body(new ApiUtil(null));
     }
 
     @GetMapping("/")

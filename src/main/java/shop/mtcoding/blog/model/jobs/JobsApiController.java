@@ -13,7 +13,9 @@ import shop.mtcoding.blog.model.resume.ResumeResponse;
 
 import shop.mtcoding.blog.model.resume.ResumeService;
 
+import shop.mtcoding.blog.model.user.SessionUser;
 import shop.mtcoding.blog.model.user.User;
+import shop.mtcoding.blog.model.user.UserService;
 
 import java.util.List;
 
@@ -23,26 +25,27 @@ public class JobsApiController {
     private final HttpSession session;
     private final JobsService jobsService;
     private final ResumeService resumeService;
+    private final UserService userService;
 
 
     @GetMapping("/api/jobs/write-jobs-form")
     public ResponseEntity<?> writeJobsForm() {
-        User sessionComp = (User)session.getAttribute("sessionComp");
-
-        JobsResponse.writeJobsFormDTO writeJobsFormDTO = jobsService.writeJobsForm(sessionComp);
+        SessionUser sessionComp = (SessionUser) session.getAttribute("sessionComp");
+        User user = userService.findById(sessionComp.getId());
+        JobsResponse.writeJobsFormDTO writeJobsFormDTO = jobsService.writeJobsForm(user);
 
         return ResponseEntity.ok(new ApiUtil<>(writeJobsFormDTO));
     }
 
     @GetMapping("/api/jobs/info")
-    public ResponseEntity<?> jobsInfo () {
+    public ResponseEntity<?> jobsInfo() {
         List<JobsResponse.ListDTO> listDTOS = jobsService.listDTOS();
         return ResponseEntity.ok(new ApiUtil<>(listDTOS));
     }
 
     @PostMapping("/api/jobs/save")
-    public @ResponseBody ResponseEntity<?> save (@Valid @RequestBody JobsRequest.JobsSaveDTO reqDTO, Errors errors) {
-        User sessionComp = (User)session.getAttribute("sessionComp");
+    public @ResponseBody ResponseEntity<?> save(@Valid @RequestBody JobsRequest.JobsSaveDTO reqDTO, Errors errors) {
+        User sessionComp = (User) session.getAttribute("sessionComp");
         JobsResponse.JonsSaveDTO jobs = jobsService.save(sessionComp, reqDTO);
         return ResponseEntity.ok(new ApiUtil(jobs));
     }
@@ -55,8 +58,8 @@ public class JobsApiController {
 
 
     @GetMapping("/api/jobs/{jobsId}/update-jobs-form")
-    public  ResponseEntity<?> updateForm (@PathVariable Integer jobsId) {
-        User sessionComp = (User)session.getAttribute("sessionComp");
+    public ResponseEntity<?> updateForm(@PathVariable Integer jobsId) {
+        User sessionComp = (User) session.getAttribute("sessionComp");
         JobsResponse.JobUpdateDTO job = jobsService.updateForm(jobsId, sessionComp.getId());
         return ResponseEntity.ok(new ApiUtil(job));
     }
@@ -83,7 +86,7 @@ public class JobsApiController {
     }
 
     @GetMapping("/api/resumes/{resumeId}/update-form")
-    public ResponseEntity<?> updateFrom(@PathVariable Integer resumeId){
+    public ResponseEntity<?> updateFrom(@PathVariable Integer resumeId) {
 
         ResumeResponse.UpdateDTO respDTO = resumeService.updateForm(resumeId);
         return ResponseEntity.ok(new ApiUtil<>(respDTO));

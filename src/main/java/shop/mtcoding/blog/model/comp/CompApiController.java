@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.blog._core.util.ApiUtil;
 import shop.mtcoding.blog.model.resume.ResumeResponse;
+import shop.mtcoding.blog.model.user.SessionUser;
 import shop.mtcoding.blog.model.user.User;
+import shop.mtcoding.blog.model.user.UserService;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class CompApiController {
     private final CompService compService;
     private final HttpSession session;
+    private final UserService userService;
 
     @PostMapping("/comp/join")
     public ResponseEntity<?> compJoin(@RequestBody CompRequest.CompJoinDTO reqDTO) {
@@ -43,8 +46,9 @@ public class CompApiController {
 
     @GetMapping("/api/comps/{id}/comp-home")
     public ResponseEntity<?> compHome(@PathVariable Integer id) {
-        User sessionComp = (User) session.getAttribute("sessionComp");
-        List<CompResponse.ComphomeDTO> comphomeDTOList = compService.findAllByUserId(sessionComp);
+        SessionUser sessionComp = (SessionUser) session.getAttribute("sessionComp");
+        User user = userService.findById(sessionComp.getId());
+        List<CompResponse.ComphomeDTO> comphomeDTOList = compService.findAllByUserId(user);
 
         return ResponseEntity.ok(new ApiUtil<>(comphomeDTOList));
     }
@@ -59,8 +63,9 @@ public class CompApiController {
     //update
     @PutMapping("/api/comps/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody CompRequest.UpdateDTO requestDTO) {
-        User sessionComp = (User) session.getAttribute("sessionComp");
-        User user = compService.updateById(sessionComp, requestDTO);
+        SessionUser sessionComp = (SessionUser) session.getAttribute("sessionComp");
+        User userComp = userService.findById(sessionComp.getId());
+        User user = compService.updateById(userComp, requestDTO);
         session.setAttribute("sessionComp", user);
         return ResponseEntity.ok(new ApiUtil<>(requestDTO));
     }

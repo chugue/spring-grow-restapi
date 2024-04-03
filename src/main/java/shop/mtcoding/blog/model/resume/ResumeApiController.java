@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.blog._core.util.ApiUtil;
+import shop.mtcoding.blog.model.user.SessionUser;
 import shop.mtcoding.blog.model.user.User;
 import shop.mtcoding.blog.model.user.UserService;
 
@@ -33,16 +34,18 @@ public class ResumeApiController {
 
     @GetMapping("/api/resume/resume-detail/{resumeId}")
     public ResponseEntity<?> resumeDetail(@PathVariable Integer resumeId, @RequestParam Integer jobsId) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        User sessionComp = (User) session.getAttribute("sessionComp");
-        ResumeResponse.DetailDTO respDTO = resumeService.resumeDetail(resumeId, jobsId, sessionUser, sessionComp);
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        User user = userService.findById(sessionUser.getId());
+        SessionUser sessionComp = (SessionUser) session.getAttribute("sessionComp");
+        User comp = userService.findById(sessionComp.getId());
+        ResumeResponse.DetailDTO respDTO = resumeService.resumeDetail(resumeId, jobsId, user, comp);
 
         return ResponseEntity.ok(new ApiUtil<>(respDTO));
     }
 
     @PostMapping("/api/resumes")
     public ResponseEntity<?> save(@RequestBody ResumeRequest.SaveDTO reqDTO) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
         ResumeResponse.SaveDTO respDTO = resumeService.save(sessionUser, reqDTO);
 
         return ResponseEntity.ok(new ApiUtil<>(respDTO));
@@ -50,7 +53,7 @@ public class ResumeApiController {
 
     @GetMapping("/api/resumes/resume-detail2/{id}")
     public ResponseEntity<?> resumeDetail2(@PathVariable Integer id) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
         User newSessionUser = userService.findById(sessionUser.getId());
 
         ResumeResponse.DetailDTO2 respDTO = resumeService.resumeDetail2(id, newSessionUser);
