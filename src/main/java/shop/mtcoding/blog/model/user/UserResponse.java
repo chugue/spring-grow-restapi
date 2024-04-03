@@ -7,16 +7,71 @@ import shop.mtcoding.blog.model.jobs.Jobs;
 import shop.mtcoding.blog.model.resume.Resume;
 import shop.mtcoding.blog.model.skill.Skill;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserResponse {
+
+    //유저 회원가입 DTO
+    @Data
+    public static class UserJoinDTO {
+        private Integer id;
+        private String email;
+        private String myName;
+        private String phone;
+        private String address;
+        private LocalDate birth;
+
+        @Builder
+        public UserJoinDTO(User user) {
+            this.id = user.getId();
+            this.email = user.getEmail();
+            this.myName = user.getMyName();
+            this.phone = user.getPhone();
+            this.address = user.getAddress();
+            this.birth = user.getBirth();
+        }
+    }
+
 
     @Data
     public static class JobsKeywordDTO{
 
     }
 
+    // 개인 회원정보 수정 DTO
+    @Data
+    public static class UserUpdateDTO{
+        private String myName;
+        private String phone;
+        private LocalDate birth;
+        private String address;
+
+        @Builder
+        public UserUpdateDTO(User user) {
+            this.myName = user.getMyName();
+            this.phone = user.getPhone();
+            this.birth = user.getBirth();
+            this.address = user.getAddress();
+        }
+    }
+
+    @Data
+    public static class UserUpdateFormDTO{
+        private String myName;
+        private String phone;
+        private LocalDate birth;
+        private String address;
+
+        @Builder
+        public UserUpdateFormDTO(User user) {
+            this.myName = user.getMyName();
+            this.phone = user.getPhone();
+            this.birth = user.getBirth();
+            this.address = user.getAddress();
+        }
+    }
 
     @Data
     public static class UserHomeDTO{

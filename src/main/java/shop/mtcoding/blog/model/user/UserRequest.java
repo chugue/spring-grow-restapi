@@ -20,8 +20,8 @@ public class UserRequest {
 
     @Data
     public static class UpdateDTO{
-        private String password;
         private String myName;
+        private String password;
         private LocalDate birth;
         private String phone;
         private String address;
@@ -36,6 +36,7 @@ public class UserRequest {
         private LocalDate birth;
         private String address;
         private String imgFileName;
+        private Integer role;
 
 
         public User toEntity (Integer role){
